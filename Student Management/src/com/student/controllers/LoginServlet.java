@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
 		
 		try {
 			if(StudentDAO.validUser(useremail,userpassword)) {
-				System.out.println("Valid User...");
+				response.getWriter().println("Login Successfully...");
 			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -42,9 +42,7 @@ public class LoginServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		if(useremail.equals("sithickbe99@gmail.com") && userpassword.equals("sithick@123")) {
-//			response.getWriter().println("Welcome "+useremail);
-//		}
+		
 	}
 
 }
