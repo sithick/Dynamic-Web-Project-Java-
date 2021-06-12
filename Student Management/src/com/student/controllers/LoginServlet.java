@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.student.dao.StudentDAO;
+import com.student.models.RegistrationModel;
 
 
 @WebServlet("/login")
@@ -30,10 +31,15 @@ public class LoginServlet extends HttpServlet {
 		String useremail = request.getParameter("useremail");
 		String userpassword = request.getParameter("userpassword");
 		System.out.println(useremail +" "+userpassword);
-		
 		try {
-			if(StudentDAO.validUser(useremail,userpassword)) {
-				response.getWriter().println("Login Successfully...");
+			RegistrationModel modal = StudentDAO.validUser(useremail,userpassword);
+			if(modal != null) {
+				RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/UserDetailsView.jsp");
+		        request.setAttribute("userDetail", modal);
+		        dispatcher.forward(request, response);
+			}
+			else {
+				response.getWriter().println("Login failed...");
 			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

@@ -28,19 +28,19 @@ public class StudentDAO {
 		
 	}
 	
-	public static boolean validUser(String mail,String psw) throws ClassNotFoundException, SQLException {
+	public static RegistrationModel validUser(String mail,String psw) throws ClassNotFoundException, SQLException {
 		Connection conn = DbConnection.getConnection();
 		
-		String sql = "select id from registerUser where email = ? and password = ?";
+		String sql = "select first_name,last_name,email,gender,city,country,password from registerUser where email = ? and password = ?";
 		PreparedStatement stmt=conn.prepareStatement(sql);
 		stmt.setString(1, mail);
 		stmt.setString(2, psw);
 		ResultSet rs=stmt.executeQuery();
-		boolean flag = false;
+		RegistrationModel model = null;
 		if(rs.next()) {
-			flag = true;
+			model = new RegistrationModel(rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getString("gender"), rs.getString("city"), rs.getString("country"), rs.getString("password"));
 		}
-		return flag;
+		return model;
 	}
 
 }

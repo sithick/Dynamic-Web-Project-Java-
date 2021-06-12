@@ -8,6 +8,21 @@ public class RegistrationModel {
 	private String city;
 	private String country;
 	private String password;
+	
+	public RegistrationModel(String firstName, String lastName, String email, String gender, String city,
+			String country, String password) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.gender = gender;
+		this.city = city;
+		this.country = country;
+		this.password = password;
+	}
+	public RegistrationModel() {
+		// TODO Auto-generated constructor stub
+	}
 	public String getFirstName() {
 		return firstName;
 	}
