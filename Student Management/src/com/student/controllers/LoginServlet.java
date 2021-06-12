@@ -27,9 +27,9 @@ public class LoginServlet extends HttpServlet {
 		String useremail = request.getParameter("useremail");
 		String userpassword = request.getParameter("userpassword");
 		System.out.println(useremail +" "+userpassword);
-		if(useremail.equals("sithickbe99@gmail.com") && userpassword.equals("sithick@123")) {
-			response.getWriter().println("Welcome "+useremail);
-		}
+//		if(useremail.equals("sithickbe99@gmail.com") && userpassword.equals("sithick@123")) {
+//			response.getWriter().println("Welcome "+useremail);
+//		}
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.student.controllers;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.student.dao.StudentDAO;
 import com.student.models.RegistrationModel;
 
 
@@ -49,8 +51,15 @@ public class RegistrationServlet extends HttpServlet {
 		registrationModel.setPassword(password);
 		
 		System.out.println(registrationModel);
+		try {
+			StudentDAO.insert(registrationModel);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("login");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/LoginView.jsp");
 		dispatcher.forward(request, response);
 	}
 
