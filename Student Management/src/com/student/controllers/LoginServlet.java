@@ -1,6 +1,7 @@
 package com.student.controllers;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.student.dao.StudentDAO;
 
 
 @WebServlet("/login")
@@ -27,6 +30,18 @@ public class LoginServlet extends HttpServlet {
 		String useremail = request.getParameter("useremail");
 		String userpassword = request.getParameter("userpassword");
 		System.out.println(useremail +" "+userpassword);
+		
+		try {
+			if(StudentDAO.validUser(useremail,userpassword)) {
+				System.out.println("Valid User...");
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 //		if(useremail.equals("sithickbe99@gmail.com") && userpassword.equals("sithick@123")) {
 //			response.getWriter().println("Welcome "+useremail);
 //		}

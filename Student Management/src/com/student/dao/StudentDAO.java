@@ -2,8 +2,9 @@ package com.student.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.sql.Statement;
 
 import com.student.models.RegistrationModel;
 
@@ -25,6 +26,21 @@ public class StudentDAO {
 		stat.setDate(8, new java.sql.Date(System.currentTimeMillis()));
 		stat.executeUpdate();
 		
+	}
+	
+	public static boolean validUser(String mail,String psw) throws ClassNotFoundException, SQLException {
+		Connection conn = DbConnection.getConnection();
+		
+		String sql = "select id from registerUser where email = ? and password = ?";
+		PreparedStatement stmt=conn.prepareStatement(sql);
+		stmt.setString(1, mail);
+		stmt.setString(2, psw);
+		ResultSet rs=stmt.executeQuery();
+		boolean flag = false;
+		if(rs.next()) {
+			flag = true;
+		}
+		return flag;
 	}
 
 }
