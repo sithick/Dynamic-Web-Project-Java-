@@ -1,6 +1,7 @@
 package com.student.models;
 
 public class RegistrationModel {
+	private Integer id;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -20,9 +21,32 @@ public class RegistrationModel {
 		this.country = country;
 		this.password = password;
 	}
+	
+	public RegistrationModel(Integer id, String firstName, String lastName, String email, String gender, String city,
+			String country, String password) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.gender = gender;
+		this.city = city;
+		this.country = country;
+		this.password = password;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public RegistrationModel() {
 		// TODO Auto-generated constructor stub
 	}
+	
 	public String getFirstName() {
 		return firstName;
 	}
