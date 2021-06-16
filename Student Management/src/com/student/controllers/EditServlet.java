@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.student.models.RegistrationModel;
 import com.student.dao.*;
@@ -22,6 +23,8 @@ public class EditServlet extends HttpServlet {
         PrintWriter out=response.getWriter();  
         out.println("<h1>Update User</h1>");  
         String sid=request.getParameter("id");  
+        HttpSession session = request.getSession();
+        session.setAttribute("sId", sid);
         int id=Integer.parseInt(sid);
         RegistrationModel model = null;
 		try {
@@ -75,7 +78,9 @@ public class EditServlet extends HttpServlet {
 		//Object creation
 		RegistrationModel registrationModel = new RegistrationModel();
 		//set values to RegistrationModel.
-		
+		HttpSession session=request.getSession(false);  
+        int nId=Integer.parseInt((String)session.getAttribute("sId"));  
+		registrationModel.setId(nId);
 		registrationModel.setFirstName(firstName);
 		registrationModel.setLastName(lastName);
 		registrationModel.setEmail(email);

@@ -37,7 +37,6 @@
             	<th>Country</th>
                 <td><c:out value="${userDetail.country}" /></td>
             </tr>
-            
                     
         </table>
     </div>  

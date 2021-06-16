@@ -34,9 +34,13 @@ public class LoginServlet extends HttpServlet {
 		try {
 			RegistrationModel modal = StudentDAO.validUser(useremail,userpassword);
 			if(modal != null) {
+				if(modal.getFirstName().equals("admin")) {
+					response.sendRedirect("admin");
+				}else {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/UserDetailsView.jsp");
 		        request.setAttribute("userDetail", modal);
 		        dispatcher.forward(request, response);
+				}
 			}
 			else {
 				response.getWriter().println("Login failed...");
