@@ -43,7 +43,11 @@ public class LoginServlet extends HttpServlet {
 				}
 			}
 			else {
-				response.getWriter().println("Login failed...");
+				response.getWriter().println("<div class='alert alert-danger' role='alert' style='text-align: center'>"
+						+ "<b>Sorry UserName or Password Error!</b>"
+						+ "</div>");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/LoginView.jsp");
+		        dispatcher.include(request, response);
 			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

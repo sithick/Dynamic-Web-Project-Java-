@@ -40,5 +40,15 @@
                     
         </table>
     </div>  
+    
+    <%
+    if(request.getServletPath().equals("/show")){
+    	out.println("<center><a href='admin'>Back</a><center>");
+    }
+    else{
+    	out.println("<center><a href='login'>Logout</a><center>");
+    }
+    
+    %>
 </body>
 </html>

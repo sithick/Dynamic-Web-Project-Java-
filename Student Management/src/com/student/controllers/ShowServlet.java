@@ -40,6 +40,7 @@ public class ShowServlet extends HttpServlet {
         try {
 			RegistrationModel model = AdminDAO.getUser(id);
 			request.setAttribute("userDetail", model);
+			request.setAttribute("firstname",model.getFirstName());
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

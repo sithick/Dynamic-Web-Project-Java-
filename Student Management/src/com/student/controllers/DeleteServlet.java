@@ -3,6 +3,7 @@ package com.student.controllers;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,8 +34,10 @@ public class DeleteServlet extends HttpServlet {
 		response.setContentType("text/html");  
         String sid=request.getParameter("id");  
         int id=Integer.parseInt(sid);
+        int res = 0;
 		try {
-			AdminDAO.delete(id);
+			res = AdminDAO.delete(id);
+			System.out.println(res);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,8 +45,22 @@ public class DeleteServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		//request.getRequestDispatcher("WEB-INF/views/ListView.jsp").include(request, response);
-		response.sendRedirect("admin");
+		//response.sendRedirect("admin");
+		if(res > 0) {
+		response.getWriter().println("<div class='alert alert-success' role='alert' style='text-align: center'>"
+				+ "<b>Successfully Removed !</b>"
+				+ "</div>");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/ListView.jsp");
+        dispatcher.include(request, response);
+		}
+		else {
+			response.getWriter().println("<div class='alert alert-danger' role='alert' style='text-align: center'>"
+					+ "<b>Sorry Can't Removed !</b>"
+					+ "</div>");
+			//response.sendRedirect("admin");
+		}
 	}
 
 	/**

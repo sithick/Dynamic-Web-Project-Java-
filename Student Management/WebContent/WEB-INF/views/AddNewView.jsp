@@ -18,11 +18,10 @@
 <div class="col-md-6">
 <div class="card">
 <header class="card-header">
-	<a href="login" class="float-right btn btn-outline-primary mt-1">Log in</a>
 	<h4 class="card-title mt-2">Add New User</h4>
 </header>
 <article class="card-body">
-<form method="post" action="save">
+<form method="post" action="addNew">
 	<div class="form-row">
 		<div class="col form-group">
 			<label>First name </label>   

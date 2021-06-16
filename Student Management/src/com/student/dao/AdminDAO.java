@@ -64,10 +64,11 @@ public class AdminDAO {
 		
 	}
 	
-	public static void delete (int id) throws ClassNotFoundException, SQLException {
+	public static int delete (int id) throws ClassNotFoundException, SQLException {
 		Connection conn = DbConnection.getConnection();
 		PreparedStatement stat = conn.prepareStatement("delete from registerUser  where id = '"+id+"'");
-		stat.executeUpdate();
+		int res = stat.executeUpdate();
+		return res;
 	}
 	
 }
