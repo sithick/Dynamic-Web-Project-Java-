@@ -1,18 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-   <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>List Users</title>
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
 <body>
-<div align="right"><a class="btn btn-primary" href="addNew" role="button">Add New</a></div>
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+      <div class="col-md-12 text-end">
+      <form action="bulkUpload" method="post" enctype ="multipart/form-data">
+        <button class="btn btn-outline-primary me-2"><input id="fileUpload" type="file" name="file" /><input type="submit" value="Bulk Upload"/></button>
+        <button class="btn btn-outline-primary"><a href="addNew" style="text-decoration:none">Add New</a></button>
+        </form>
+      </div>
+    </header>
+  </div>
+<!-- <div align="right"><a class="btn btn-primary" href="addNew" role="button">Add New</a></div> -->
 <div align="center">
-        <table border="1" cellpadding="5">
-            <caption><h2>List of Users</h2></caption>
+<caption><h2>List of Users</h2></caption>
+        <table class="table table-success table-striped">
+            
           	<tr>
           		<th>Id</th>
           		<th>First Name</th>
