@@ -1,6 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%-- <%@ page import="javax.servlet.http.HttpSession" %>
+<%
+
+HttpSession s=request.getSession(false);  
+String filePath=(String)session.getAttribute("filePath");
+System.out.println(filePath);
+%> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +33,7 @@
             
           	<tr>
           		<th>Id</th>
+          		<th>Profile</th>
           		<th>First Name</th>
           		<th>Last Name</th>
           		<th>Email Address</th>
@@ -37,6 +45,10 @@
           	<c:forEach var="userDetail" items="${lists}">
           	<tr>
                 <td><c:out value="${userDetail.id}" /></td>
+                <td><div class="text-center">
+  					<img src="http://localhost:8080/Student_Management/images/MyPhoto.jpg" style="height:75px;width:75px;" class="rounded" alt="pic">
+					</div>
+				</td>
                 <td><c:out value="${userDetail.firstName}" /></td>
                 <td><c:out value="${userDetail.lastName}" /></td>
                 <td><c:out value="${userDetail.email}" /></td>

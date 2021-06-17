@@ -1,4 +1,9 @@
 package com.student.dao;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -71,4 +76,33 @@ public class AdminDAO {
 		return res;
 	}
 	
+	public static ArrayList<RegistrationModel> BulkUploadFile(String path) throws IOException {
+		ArrayList<RegistrationModel> list = new ArrayList<RegistrationModel>();
+		@SuppressWarnings("resource")
+		BufferedReader buff = new BufferedReader(new FileReader(path));
+		String str = "";
+		while((str = buff.readLine()) !=null){
+			String[] arr = str.split(",");
+			list.add(new RegistrationModel(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]));
+		}
+		return list;
+	}
+	
+	public static void bulkInsert(ArrayList<RegistrationModel> list) throws ClassNotFoundException, SQLException {
+		Connection conn = DbConnection.getConnection();
+		for(RegistrationModel model : list) {
+		PreparedStatement stat = conn.prepareStatement("insert into registerUser (first_name,last_name,email,gender,city,country,password,createdDate) values(?,?,?,?,?,?,?,?)");
+		stat.setString(1, model.getFirstName());
+		stat.setString(2, model.getLastName());
+		stat.setString(3, model.getEmail());
+		stat.setString(4, model.getGender());
+		stat.setString(5, model.getCity());
+		stat.setString(6, model.getCountry());
+		stat.setString(7, model.getPassword());
+		stat.setDate(8, new java.sql.Date(System.currentTimeMillis()));
+		stat.executeUpdate();
+		}
+		conn.close();
+		
+	}
 }

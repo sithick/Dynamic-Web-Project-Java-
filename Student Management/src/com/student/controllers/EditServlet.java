@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import com.student.models.RegistrationModel;
 import com.student.dao.*;
 
 @WebServlet("/edit")
+//MultipartConfig
 public class EditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
@@ -36,9 +38,9 @@ public class EditServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//enctype ='multipart/form-data'
         out.print("<form action='edit' method='post'>");  
-        out.print("<table>");  
-        out.print("<tr><td>Id</td><td><input type='hidden' name='id' value='"+model.getId()+"'/></td></tr>");
+        out.print("<table>");
         out.print("<tr><td>First Name</td><td><input type='text' name='first_name' value='"+model.getFirstName()+"'/></td></tr>");  
         out.print("<tr><td>Last Name:</td><td><input type='text' name='last_name' value='"+model.getLastName()+"'/></td></tr>");  
         out.print("<tr><td>Email:</td><td><input type='email' name='email' value='"+model.getEmail()+"'/></td></tr>");
@@ -57,7 +59,7 @@ public class EditServlet extends HttpServlet {
         out.print("</select>");  
         out.print("</td></tr>");
         out.print("<tr><td>Password:</td><td><input type='password' name='password' value='"+model.getPassword()+"'</td></tr>");
-        out.print("<tr><td colspan='2'><input type='submit' value='Edit & Save '/></td></tr>");  
+        out.print("<tr><td colspan='2'><input type='submit' value='Edit & Save '/></td></tr>");
         out.print("</table>");  
         out.print("</form>");  
           
@@ -75,6 +77,15 @@ public class EditServlet extends HttpServlet {
 		String country = request.getParameter("country");
 		String password = request.getParameter("password");
 		
+		Part filePart = request.getPart("file");
+	    String fileName = filePart.getSubmittedFileName();
+	    for (Part part : request.getParts()) {
+	      part.write("C:\\Users\\Abubakkar Sithick.G\\git\\Dynamic-Web-Project-Java-\\Student Management\\WebContent\\images\\" + fileName);
+	    }
+	    String filePath = "images/MyPhoto.jpg";
+	    
+	    HttpSession httpSession = request.getSession();
+	    httpSession.setAttribute("filePath", filePath);
 		//Object creation
 		RegistrationModel registrationModel = new RegistrationModel();
 		//set values to RegistrationModel.
