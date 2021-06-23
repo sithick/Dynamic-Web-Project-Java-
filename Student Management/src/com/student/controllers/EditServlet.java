@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,13 +14,13 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.student.models.RegistrationModel;
+import com.student.models.UploadModel;
 import com.student.dao.*;
 
 @WebServlet("/edit")
-//MultipartConfig
+@MultipartConfig
 public class EditServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-    
+    private static final String fileLocation = "C:\\Users\\Abubakkar Sithick.G\\git\\Dynamic-Web-Project-Java-\\Student Management\\WebContent\\images\\";
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");  
         PrintWriter out=response.getWriter();  
@@ -32,14 +33,12 @@ public class EditServlet extends HttpServlet {
 		try {
 			model = AdminDAO.getUser(id);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//enctype ='multipart/form-data'
-        out.print("<form action='edit' method='post'>");  
+        out.print("<form action='edit' method='post' enctype ='multipart/form-data'>");  
         out.print("<table>");
         out.print("<tr><td>First Name</td><td><input type='text' name='first_name' value='"+model.getFirstName()+"'/></td></tr>");  
         out.print("<tr><td>Last Name:</td><td><input type='text' name='last_name' value='"+model.getLastName()+"'/></td></tr>");  
@@ -59,10 +58,10 @@ public class EditServlet extends HttpServlet {
         out.print("</select>");  
         out.print("</td></tr>");
         out.print("<tr><td>Password:</td><td><input type='password' name='password' value='"+model.getPassword()+"'</td></tr>");
+        out.print("<tr><td>Photo :</td><td><input id='fileUpload' type='file' name='file' /></td></tr>");
         out.print("<tr><td colspan='2'><input type='submit' value='Edit & Save '/></td></tr>");
         out.print("</table>");  
-        out.print("</form>");  
-          
+        out.print("</form>");
         out.close();
         
 	}
@@ -77,15 +76,15 @@ public class EditServlet extends HttpServlet {
 		String country = request.getParameter("country");
 		String password = request.getParameter("password");
 		
-		Part filePart = request.getPart("file");
-	    String fileName = filePart.getSubmittedFileName();
-	    for (Part part : request.getParts()) {
-	      part.write("C:\\Users\\Abubakkar Sithick.G\\git\\Dynamic-Web-Project-Java-\\Student Management\\WebContent\\images\\" + fileName);
-	    }
-	    String filePath = "images/MyPhoto.jpg";
+		
+		/*
+		 * for (Part part : request.getParts()) { part.write( fileLocation + fileName);
+		 * }
+		 */
+	    //String filePath = "images/MyPhoto.jpg";
 	    
-	    HttpSession httpSession = request.getSession();
-	    httpSession.setAttribute("filePath", filePath);
+	    //HttpSession httpSession = request.getSession();
+	    //httpSession.setAttribute("filePath", filePath);
 		//Object creation
 		RegistrationModel registrationModel = new RegistrationModel();
 		//set values to RegistrationModel.
@@ -100,11 +99,28 @@ public class EditServlet extends HttpServlet {
 		registrationModel.setCountry(country);
 		registrationModel.setPassword(password);
 		
-		System.out.println(registrationModel);
+		Part filePart = request.getPart("file");
+	    String fileName = filePart.getSubmittedFileName().replace(" ","");
+	    String fileType = fileName.substring(fileName.indexOf("."));
+	    String filePath = fileLocation + fileName;
+	    filePart.write(filePath);
+	    
+	    UploadModel upload = new UploadModel(fileName,filePath,fileType,registrationModel.getId());
+		/*
+		 * upload.setFileName(fileName); upload.setFilePath(filePath);
+		 * upload.setFileType(fileType);
+		 * upload.setRegisteruserId(registrationModel.getId());
+		 */
+	    
+	    
+	    //registrationModel.setUploadModel(upload);
+	  
+		//System.out.println(registrationModel);
+		//System.out.println(upload);
 		try {
+			AdminDAO.fileInsert(upload);
 			AdminDAO.update(registrationModel);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		response.sendRedirect("admin"); 

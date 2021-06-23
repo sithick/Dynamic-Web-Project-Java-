@@ -69,13 +69,16 @@ public class adminServlet extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/ListView.jsp");
 		try {
-			request.setAttribute("lists", AdminDAO.list());
+			System.out.println(AdminDAO.list());
+			request.setAttribute("list", AdminDAO.list());
+			request.setAttribute("user", request.getParameter("id"));
+			//System.out.println(request.getAttribute("user"));
 			System.out.println(AdminDAO.list());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/ListView.jsp");
 		dispatcher.forward(request, response);
 	}
 

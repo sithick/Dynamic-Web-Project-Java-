@@ -10,7 +10,7 @@ import com.student.models.RegistrationModel;
 
 public class StudentDAO {
 	
-	@SuppressWarnings("deprecation")
+	
 	public static void insert(RegistrationModel model) throws ClassNotFoundException, SQLException {
 		Connection conn = DbConnection.getConnection();
 		PreparedStatement stat = conn.prepareStatement("insert into registerUser (first_name,last_name,email,gender,city,country,password,createdDate) values(?,?,?,?,?,?,?,?)");
@@ -31,14 +31,14 @@ public class StudentDAO {
 	public static RegistrationModel validUser(String mail,String psw) throws ClassNotFoundException, SQLException {
 		Connection conn = DbConnection.getConnection();
 		
-		String sql = "select first_name,last_name,email,gender,city,country,password from registerUser where email = ? and password = ?";
+		String sql = "select id,first_name,last_name,email,gender,city,country,password from registerUser where email = ? and password = ?";
 		PreparedStatement stmt=conn.prepareStatement(sql);
 		stmt.setString(1, mail);
 		stmt.setString(2, psw);
 		ResultSet rs=stmt.executeQuery();
 		RegistrationModel model = null;
 		if(rs.next()) {
-			model = new RegistrationModel(rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getString("gender"), rs.getString("city"), rs.getString("country"), rs.getString("password"));
+			model = new RegistrationModel(rs.getInt("id"),rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getString("gender"), rs.getString("city"), rs.getString("country"), rs.getString("password"));
 		}
 		return model;
 	}

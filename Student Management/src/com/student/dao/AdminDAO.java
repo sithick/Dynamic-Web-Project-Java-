@@ -1,8 +1,10 @@
 package com.student.dao;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,11 +19,23 @@ public class AdminDAO {
 	public static ArrayList<RegistrationModel> list() throws Exception{
 		ArrayList<RegistrationModel> lists = new ArrayList<RegistrationModel>();
 		Connection conn = DbConnection.getConnection();
-		
+		//String joinSql = "SELECT RU.id RU.first_name, RU.last_name,RU.email,RU.gender,RU.city,RU.country,RU.password,UF.fileName FROM registeruser as RU INNER JOIN uploadedfiles as UF ON RU.id = UF.registeruserId";
 		String sql = "select * from registerUser";
-		ResultSet rs=conn.createStatement().executeQuery(sql);
+		String sqlJoin = "select id, first_name, last_name,email,gender,city,country,password,fileName from registerUser r inner join uploadedfiles u on r.id = u.registeruserId";
+		String naturalJoin = "SELECT id, first_name, last_name,email,gender,city,country,password,fileName"
+				+ " FROM registeruser"
+				+ " LEFT OUTER JOIN uploadedfiles"
+				+ " ON registeruser.id = uploadedfiles.registeruserId"
+				+ " UNION"
+				+ " SELECT id, first_name, last_name,email,gender,city,country,password,fileName"
+				+ " FROM registeruser"
+				+ " RIGHT OUTER JOIN uploadedfiles"
+				+ " ON registeruser.id = uploadedfiles.registeruserId;";
+		ResultSet rs=conn.createStatement().executeQuery(naturalJoin);
 		while(rs.next()) {
-			lists.add(new RegistrationModel(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getString("gender"), rs.getString("city"), rs.getString("country"), rs.getString("password")));
+			//lists.add(new RegistrationModel(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8),rs.getString(9)));
+			//lists.add(new RegistrationModel(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getString("gender"), rs.getString("city"), rs.getString("country"), rs.getString("password"),rs.getString("fileName")));
+			lists.add(new RegistrationModel(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getString("gender"), rs.getString("city"), rs.getString("country"), rs.getString("password"),rs.getString("fileName")));
 		}
 		return lists;
 		
@@ -78,7 +92,7 @@ public class AdminDAO {
 	
 	public static ArrayList<RegistrationModel> BulkUploadFile(String path) throws IOException {
 		ArrayList<RegistrationModel> list = new ArrayList<RegistrationModel>();
-		@SuppressWarnings("resource")
+	
 		BufferedReader buff = new BufferedReader(new FileReader(path));
 		String str = "";
 		while((str = buff.readLine()) !=null){
@@ -104,5 +118,43 @@ public class AdminDAO {
 		}
 		conn.close();
 		
+	}
+	public static void fileInsert(UploadModel model) throws ClassNotFoundException, SQLException {
+		Connection conn = DbConnection.getConnection();
+		PreparedStatement stat = conn.prepareStatement("insert into uploadedfiles (fileName,fullFilePath,fileType,registeruserId) values(?,?,?,?)");
+		stat.setString(1, model.getFileName());
+		stat.setString(2, model.getFilePath());
+		stat.setString(3, model.getFileType());
+		stat.setInt(4, model.getRegisteruserId());
+		
+		stat.executeUpdate();
+	}
+
+	public static UploadModel getUserFile(int id) throws ClassNotFoundException, SQLException {
+		Connection conn = DbConnection.getConnection();
+		
+		String sql = "select fileId,fileName,fullFilePath,fileType,registeruserId from uploadedfiles where registeruserId = '"+id+"'";
+		ResultSet rs=conn.createStatement().executeQuery(sql);
+		UploadModel model = null;
+		if(rs.next()) {
+			model = new UploadModel(rs.getInt("fileId"), rs.getString("fileName"), rs.getString("fullFilePath"), rs.getString("fileType"), rs.getInt("registeruserId"));
+		}
+		return model;
+		
+	}
+	
+	public static boolean history(RegistrationModel model) throws IOException {
+		FileWriter fileWriter = new FileWriter("C:\\Users\\Abubakkar Sithick.G\\git\\Dynamic-Web-Project-Java-\\Student Management\\WebContent\\files\\history.txt",true);
+		BufferedWriter bWriter = new BufferedWriter(fileWriter);
+		/*
+		 * String format = String.format("%-20s %-20s %-20s %-20s\n","ID","Name",
+		 * "Status","Modification Date"); bWriter.write(format);
+		 */
+		String val = String.format("%-20s %-20s %-20s %-20s\n",model.getId(),model.getFirstName(),model.getStatus(),new Date());
+		bWriter.write(val);
+		//bWriter.newLine();
+		bWriter.flush();
+		bWriter.close();
+		return true;
 	}
 }

@@ -12,25 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.student.dao.AdminDAO;
 import com.student.models.RegistrationModel;
+import com.student.models.UploadModel;
 
-/**
- * Servlet implementation class ShowServlet
- */
 @WebServlet("/show")
 public class ShowServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ShowServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");  
         PrintWriter out=response.getWriter();  
@@ -39,24 +25,20 @@ public class ShowServlet extends HttpServlet {
         int id=Integer.parseInt(sid);
         try {
 			RegistrationModel model = AdminDAO.getUser(id);
+			UploadModel uploadModel = AdminDAO.getUserFile(id);
+			//model.setUploadModel(uploadModel);
+			//System.out.println(model);
 			request.setAttribute("userDetail", model);
+			//request.setAttribute("fileName", model.getUploadModel().getFileName());
+			//System.out.println("hi" + request.getAttribute("fileName"));
 			request.setAttribute("firstname",model.getFirstName());
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
         request.getRequestDispatcher("WEB-INF/views/UserDetailsView.jsp").include(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
 
 }

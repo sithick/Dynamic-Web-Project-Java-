@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.student.models.RegistrationModel,java.util.*" %>
 <%-- <%@ page import="javax.servlet.http.HttpSession" %>
 <%
 
@@ -8,28 +9,44 @@ HttpSession s=request.getSession(false);
 String filePath=(String)session.getAttribute("filePath");
 System.out.println(filePath);
 %> --%>
+
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+th, td {
+  padding: 15px;
+  text-align: left;
+}
+.container{
+	margin-top: 10px;
+    margin-right: 0px;
+    margin-left: 790px;
+}
+.addnew_button{
+font-size: 17px;
+}
+</style>
 <meta charset="ISO-8859-1">
 <title>List Users</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
 <body>
 <div class="container">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-      <div class="col-md-12 text-end">
+    <header>
+      <div>
       <form action="bulkUpload" method="post" enctype ="multipart/form-data">
-        <button class="btn btn-outline-primary me-2"><input id="fileUpload" type="file" name="file" /><input type="submit" value="Bulk Upload"/></button>
-        <button class="btn btn-outline-primary"><a href="addNew" style="text-decoration:none">Add New</a></button>
+        <button ><input id="fileUpload" type="file" name="file" /><input type="submit" value="Bulk Upload"/></button>
+        <button class="addnew_button"><a href="addNew" style="text-decoration:none">Add New</a></button>
+        <a style="text-decoration:none" href="logout?id=<c:out value="${user}" />">Log Out</a>
         </form>
+        
       </div>
     </header>
   </div>
 <!-- <div align="right"><a class="btn btn-primary" href="addNew" role="button">Add New</a></div> -->
 <div align="center">
 <caption><h2>List of Users</h2></caption>
-        <table class="table table-success table-striped">
+        <table>
             
           	<tr>
           		<th>Id</th>
@@ -42,12 +59,25 @@ System.out.println(filePath);
           		<th>City</th>
           		<th>Actions</th>
           	</tr>
-          	<c:forEach var="userDetail" items="${lists}">
+          	<%-- <%
+                ArrayList<RegistrationModel> listValues = (ArrayList<RegistrationModel>) request.getAttribute("list");
+                System.out.println("-->"+listValues);
+                %> --%>
+          	<c:forEach var="userDetail" items="${list}">
           	<tr>
                 <td><c:out value="${userDetail.id}" /></td>
-                <td><div class="text-center">
-  					<img src="http://localhost:8080/Student_Management/images/MyPhoto.jpg" style="height:75px;width:75px;" class="rounded" alt="pic">
+                <%-- <td><c:out value="${userDetail.fileName}" /></td> --%>
+                <td>
+                <c:if test="${userDetail.fileName eq null}">
+                <div class="text-center">
+  					<img src="http://localhost:8080/Student_Management/images/no-image.jpg" style="height:75px;width:75px;" alt="pic">
 					</div>
+				</c:if>
+				<c:if test="${userDetail.fileName ne null}">
+                <div class="text-center">
+  					<img src="http://localhost:8080/Student_Management/images/${userDetail.fileName}" style="height:75px;width:75px;" alt="pic">
+					</div>
+				</c:if>
 				</td>
                 <td><c:out value="${userDetail.firstName}" /></td>
                 <td><c:out value="${userDetail.lastName}" /></td>
@@ -55,9 +85,9 @@ System.out.println(filePath);
                 <td><c:out value="${userDetail.gender}" /></td>
                 <td><c:out value="${userDetail.city}" /></td>
                 <td><c:out value="${userDetail.country}" /></td>
-                <td><a style="text-decoration:none" href="edit?id=<c:out value='${userDetail.id}' />">Edit</a>
+                <td><a style="text-decoration:none" href="edit?id=<c:out value="${userDetail.id}" />">Edit</a>
 								&nbsp;&nbsp;&nbsp;&nbsp; 
-								<a style="text-decoration:none" href="delete?id=<c:out value='${userDetail.id}' />">Delete</a>
+								<a style="text-decoration:none" href="delete?id=<c:out value="${userDetail.id}" />">Delete</a>
 								&nbsp;&nbsp;&nbsp;&nbsp; 
 								<a style="text-decoration:none" href="show?id=<c:out value='${userDetail.id}' />">View</a>
 				</td>

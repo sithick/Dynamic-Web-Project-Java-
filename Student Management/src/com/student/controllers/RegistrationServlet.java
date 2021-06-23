@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.student.dao.AdminDAO;
 import com.student.dao.StudentDAO;
 import com.student.models.RegistrationModel;
 
@@ -50,9 +51,11 @@ public class RegistrationServlet extends HttpServlet {
 		registrationModel.setCountry(country);
 		registrationModel.setPassword(password);
 		
-		System.out.println(registrationModel);
+		//System.out.println(registrationModel);
 		try {
 			StudentDAO.insert(registrationModel);
+			registrationModel.setStatus("Register");
+			AdminDAO.history(registrationModel);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

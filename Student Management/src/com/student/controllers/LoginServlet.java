@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.student.dao.AdminDAO;
 import com.student.dao.StudentDAO;
 import com.student.models.RegistrationModel;
 
@@ -33,9 +34,12 @@ public class LoginServlet extends HttpServlet {
 		System.out.println(useremail +" "+userpassword);
 		try {
 			RegistrationModel modal = StudentDAO.validUser(useremail,userpassword);
+			modal.setStatus("Login");
 			if(modal != null) {
+				AdminDAO.history(modal);
 				if(modal.getFirstName().equals("admin")) {
-					response.sendRedirect("admin");
+					response.sendRedirect("admin?id="+modal.getId());
+			        //request.setAttribute("user", modal);
 				}else {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/UserDetailsView.jsp");
 		        request.setAttribute("userDetail", modal);
@@ -47,7 +51,7 @@ public class LoginServlet extends HttpServlet {
 						+ "<b>Sorry UserName or Password Error!</b>"
 						+ "</div>");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/LoginView.jsp");
-		        dispatcher.include(request, response);
+		        dispatcher.forward(request, response);
 			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
