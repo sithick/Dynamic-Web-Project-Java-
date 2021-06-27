@@ -25,15 +25,12 @@ System.out.println(fileName);
             <caption><h2>List of Details</h2></caption>
              <tr>
             	<th>File Name</th>
-            	<%-- <c:if test="${request.getAttribute('fileName').isEmpty()}">
-            		<td><c:out value="${fileDetail.id}" /></td>
-            	</c:if> --%>
-                <td><%= (String) request.getAttribute("fileName") %></td>
+                <td>${userDetail.fileName}</td>
             </tr>
           	<tr>
           		<th>Profile</th>
           		<td><div class="text-center">
-  					<img src="http://localhost:8080/Student_Management/images/<%= (String) request.getAttribute("fileName") %>" style="height:75px;width:75px;" class="rounded" alt="pic">
+  					<img src="http://localhost:8080/Student_Management/images/${userDetail.fileName}" style="height:75px;width:75px;" class="rounded" alt="pic">
 					</div>
 				</td>
           	</tr>

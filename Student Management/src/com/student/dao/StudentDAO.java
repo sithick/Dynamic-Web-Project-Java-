@@ -32,6 +32,7 @@ public class StudentDAO {
 		Connection conn = DbConnection.getConnection();
 		
 		String sql = "select id,first_name,last_name,email,gender,city,country,password from registerUser where email = ? and password = ?";
+		//String joinSql = "select id,first_name,last_name,email,gender,city,country,password from registerUser inner join uploadedfiles ON registeruser.id = uploadedfiles.registeruserId";
 		PreparedStatement stmt=conn.prepareStatement(sql);
 		stmt.setString(1, mail);
 		stmt.setString(2, psw);
@@ -41,6 +42,18 @@ public class StudentDAO {
 			model = new RegistrationModel(rs.getInt("id"),rs.getString("first_name"), rs.getString("last_name"), rs.getString("email"), rs.getString("gender"), rs.getString("city"), rs.getString("country"), rs.getString("password"));
 		}
 		return model;
+	}
+	
+	public static String fileName(int id) throws Exception, SQLException {
+		Connection conn = DbConnection.getConnection();
+		String sql = "select fileName from uploadedfiles where registeruserId =?";
+		PreparedStatement stmt=conn.prepareStatement(sql);
+		stmt.setInt(1, id);
+		ResultSet rs=stmt.executeQuery();
+		if(rs.next()) {
+			return rs.getString("fileName");
+		}
+		return null;
 	}
 
 }

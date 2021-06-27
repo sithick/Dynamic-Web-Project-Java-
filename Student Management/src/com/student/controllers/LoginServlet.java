@@ -34,14 +34,21 @@ public class LoginServlet extends HttpServlet {
 		System.out.println(useremail +" "+userpassword);
 		try {
 			RegistrationModel modal = StudentDAO.validUser(useremail,userpassword);
-			modal.setStatus("Login");
 			if(modal != null) {
+				modal.setStatus("Login");
 				AdminDAO.history(modal);
 				if(modal.getFirstName().equals("admin")) {
 					response.sendRedirect("admin?id="+modal.getId());
 			        //request.setAttribute("user", modal);
 				}else {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/UserDetailsView.jsp");
+				try {
+					String fileName = StudentDAO.fileName(modal.getId());
+					modal.setFileName(fileName);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		        request.setAttribute("userDetail", modal);
 		        dispatcher.forward(request, response);
 				}
