@@ -64,18 +64,7 @@ System.out.println(fileName);
     </c:if>
     
     <c:if test="${servletPath eq com }">
-    <td><a href='logout?id=<c:out value='${userDetail.id}'/>'>Logout</a></td>
-    </c:if>
-    <%-- <%
-    if(request.getServletPath().equals("/show")){
-    	out.println("<center><center>");
-    }
-    else{
-    	//String var = "logout?id="+<;
-    	String quot = "'";
-    	out.println("<center>"+"<a href="+quot+"logout?id=<c:out value='${userDetail.id}'/>"+quot+">Logout</a>"+"<center>");
-    }
-    
-    %> --%>
+    <div style="align-content: center;"><a href='logout?id=<c:out value='${userDetail.id}'/>'>Logout</a></div>
+    </c:if>s
 </body>
 </html>

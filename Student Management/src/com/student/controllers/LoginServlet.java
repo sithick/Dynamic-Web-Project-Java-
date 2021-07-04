@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +38,11 @@ public class LoginServlet extends HttpServlet {
 			if(modal != null) {
 				modal.setStatus("Login");
 				AdminDAO.history(modal);
+				Cookie cookie = new Cookie("username", modal.getFirstName());
+				response.addCookie(cookie);
 				if(modal.getFirstName().equals("admin")) {
+					//RequestDispatcher dispatcher = request.getRequestDispatcher("admin");
+					//dispatcher.forward(request, response);
 					response.sendRedirect("admin?id="+modal.getId());
 			        //request.setAttribute("user", modal);
 				}else {
@@ -46,7 +51,6 @@ public class LoginServlet extends HttpServlet {
 					String fileName = StudentDAO.fileName(modal.getId());
 					modal.setFileName(fileName);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		        request.setAttribute("userDetail", modal);
@@ -61,10 +65,8 @@ public class LoginServlet extends HttpServlet {
 		        dispatcher.forward(request, response);
 			}
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
