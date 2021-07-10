@@ -22,7 +22,6 @@ public class UploadModel {
 		this.registeruserId = registeruserId;
 	}
 	public UploadModel() {
-		// TODO Auto-generated constructor stub
 	}
 	public Integer getFileId() {
 		return fileId;
@@ -54,11 +53,7 @@ public class UploadModel {
 	public void setRegisteruserId(Integer registeruserId) {
 		this.registeruserId = registeruserId;
 	}
-	@Override
-	public String toString() {
-		return String.format("UploadModel [fileId=%s, fileName=%s, filePath=%s, fileType=%s, registeruserId=%s]",
-				fileId, fileName, filePath, fileType, registeruserId);
-	}
+	
 	
 	
 }

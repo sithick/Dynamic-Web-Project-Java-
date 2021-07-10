@@ -12,10 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.student.dao.AdminDAO;
 import com.student.models.RegistrationModel;
-import com.student.models.UploadModel;
+
 
 @WebServlet("/show")
 public class ShowServlet extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");  
@@ -25,13 +27,8 @@ public class ShowServlet extends HttpServlet {
         int id=Integer.parseInt(sid);
         try {
 			RegistrationModel model = AdminDAO.getUser(id);
-			UploadModel uploadModel = AdminDAO.getUserFile(id);
-			//model.setUploadModel(uploadModel);
-			//System.out.println(model);
 			request.setAttribute("userDetail", model);
-			//request.setAttribute("fileName", model.getUploadModel().getFileName());
-			//System.out.println("hi" + request.getAttribute("fileName"));
-			request.setAttribute("firstname",model.getFirstName());
+			//request.setAttribute("firstname",model.getFirstName());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {

@@ -146,10 +146,6 @@ public class AdminDAO {
 	public static boolean history(RegistrationModel model) throws IOException {
 		FileWriter fileWriter = new FileWriter("C:\\Users\\Abubakkar Sithick.G\\git\\Dynamic-Web-Project-Java-\\Student Management\\WebContent\\files\\history.txt",true);
 		BufferedWriter bWriter = new BufferedWriter(fileWriter);
-		/*
-		 * String format = String.format("%-20s %-20s %-20s %-20s\n","ID","Name",
-		 * "Status","Modification Date"); bWriter.write(format);
-		 */
 		String val = String.format("%-20s %-20s %-20s %-20s\n",model.getId(),model.getFirstName(),model.getStatus(),new Date());
 		bWriter.write(val);
 		//bWriter.newLine();

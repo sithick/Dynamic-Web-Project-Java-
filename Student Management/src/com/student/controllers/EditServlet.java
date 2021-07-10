@@ -20,7 +20,8 @@ import com.student.dao.*;
 @WebServlet("/edit")
 @MultipartConfig
 public class EditServlet extends HttpServlet {
-    private static final String fileLocation = "C:\\Users\\Abubakkar Sithick.G\\git\\Dynamic-Web-Project-Java-\\Student Management\\WebContent\\images\\";
+	private static final long serialVersionUID = 1L;
+	private static final String fileLocation = "C:\\Users\\Abubakkar Sithick.G\\git\\Dynamic-Web-Project-Java-\\Student Management\\WebContent\\images\\";
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");  
         PrintWriter out=response.getWriter();  
@@ -37,7 +38,6 @@ public class EditServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		//enctype ='multipart/form-data'
         out.print("<form action='edit' method='post' enctype ='multipart/form-data'>");  
         out.print("<table>");
         out.print("<tr><td>First Name</td><td><input type='text' name='first_name' value='"+model.getFirstName()+"'/></td></tr>");  
@@ -76,17 +76,9 @@ public class EditServlet extends HttpServlet {
 		String country = request.getParameter("country");
 		String password = request.getParameter("password");
 		
-		
-		/*
-		 * for (Part part : request.getParts()) { part.write( fileLocation + fileName);
-		 * }
-		 */
-	    //String filePath = "images/MyPhoto.jpg";
-	    
-	    //HttpSession httpSession = request.getSession();
-	    //httpSession.setAttribute("filePath", filePath);
 		//Object creation
 		RegistrationModel registrationModel = new RegistrationModel();
+		
 		//set values to RegistrationModel.
 		HttpSession session=request.getSession(false);  
         int nId=Integer.parseInt((String)session.getAttribute("sId"));  
@@ -106,17 +98,6 @@ public class EditServlet extends HttpServlet {
 	    filePart.write(filePath);
 	    
 	    UploadModel upload = new UploadModel(fileName,filePath,fileType,registrationModel.getId());
-		/*
-		 * upload.setFileName(fileName); upload.setFilePath(filePath);
-		 * upload.setFileType(fileType);
-		 * upload.setRegisteruserId(registrationModel.getId());
-		 */
-	    
-	    
-	    //registrationModel.setUploadModel(upload);
-	  
-		//System.out.println(registrationModel);
-		//System.out.println(upload);
 		try {
 			AdminDAO.fileInsert(upload);
 			AdminDAO.update(registrationModel);

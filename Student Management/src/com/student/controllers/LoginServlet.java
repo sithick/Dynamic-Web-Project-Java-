@@ -41,10 +41,7 @@ public class LoginServlet extends HttpServlet {
 				Cookie cookie = new Cookie("username", modal.getFirstName());
 				response.addCookie(cookie);
 				if(modal.getFirstName().equals("admin")) {
-					//RequestDispatcher dispatcher = request.getRequestDispatcher("admin");
-					//dispatcher.forward(request, response);
 					response.sendRedirect("admin?id="+modal.getId());
-			        //request.setAttribute("user", modal);
 				}else {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/UserDetailsView.jsp");
 				try {
